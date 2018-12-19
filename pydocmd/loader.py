@@ -120,6 +120,12 @@ def get_function_signature(function, owner_class=None, show_module=False):
     name_parts.append(owner_class.__name__)
   if hasattr(function, '__name__'):
     name_parts.append(function.__name__)
+  elif isinstance(function, staticmethod):
+    function = function.__func__
+    name_parts.append(function.__name__)
+  elif isinstance(function, classmethod):
+    function = function.__get__('junk')  # instance doesn't matter - not called, not used.
+    name_parts.append(function.__name__)
   else:
     name_parts.append(type(function).__name__)
     name_parts.append('__call__')
