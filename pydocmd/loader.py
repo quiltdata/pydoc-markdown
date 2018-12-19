@@ -92,6 +92,13 @@ class PythonLoader(object):
 
 
 def get_docstring(function):
+  if inspect.isclass(function):
+    class_doc = trim(function.__doc__ or '').strip()
+    init_doc = trim(function.__init__.__doc__ or '').strip()
+    if class_doc and init_doc:
+      return '\n\n**\\_\\_init\\_\\_**\n\n'.join((class_doc, init_doc))
+    return class_doc if class_doc else init_doc
+
   if isinstance(function, (staticmethod, classmethod)):
     return function.__func__.__doc__ or ''
   elif hasattr(function, '__name__') or isinstance(function, property):
