@@ -81,14 +81,14 @@ class PythonLoader(object):
     else:
       default_title = section.identifier
 
+    # get the function signature
+    sig = None
+    if callable(obj) or isinstance(obj, (classmethod, staticmethod)):
+      sig = get_function_signature(obj, scope if inspect.isclass(scope) else None)
+
     section.title = getattr(obj, '__name__', default_title)
     section.content = trim(get_docstring(obj))
-    section.loader_context = {'obj': obj, 'scope': scope}
-
-    # Add the function signature in a code-block.
-    if callable(obj):
-      sig = get_function_signature(obj, scope if inspect.isclass(scope) else None)
-      section.content = '```python\n{}\n```\n'.format(sig) + section.content
+    section.loader_context = {'obj': obj, 'scope': scope, 'sig': sig}
 
 
 def get_docstring(function):
