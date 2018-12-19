@@ -23,7 +23,24 @@ This module provides utilities for importing Python objects by name.
 
 import types
 import inspect
+import re
 
+
+ALWAYS_SKIPPED = {
+  '__builtins__',
+  '__cached__',
+  '__doc__',
+  '__file__',
+  '__loader__',
+  '__name__',
+  '__package__',
+  '__spec__',
+  '__module__',
+  '__dict__',
+  '__weakref__',
+  '__doc__',
+  '__init__',  # appended to class description
+}
 
 def import_module(name):
   """
@@ -40,7 +57,6 @@ def import_object(name):
   """
   Like #import_object_with_scope() but returns only the object.
   """
-
   return import_object_with_scope(name)[0]
 
 
@@ -66,7 +82,7 @@ def import_object_with_scope(name):
   for part in parts[1:]:
     current_name += '.' + part
     try:
-      if '__dict__' in obj:
+      if hasattr(obj, "__dict__"):
         # Using directly __dict__ for descriptors, where we want to get the descriptor's instance
         # and not calling the descriptor's __get__ method.
         sub_obj = obj.__dict__[part]
@@ -112,8 +128,9 @@ def dir_object(name, sort_order, need_docstrings=True):
   for key, value in getattr(obj, '__dict__', {}).items():
     if isinstance(value, (staticmethod, classmethod)):
       value = value.__func__
-    if key.startswith('_'): continue
-    if not hasattr(value, '__doc__'): continue
+    if re.match('_[a-zA-Z]', key): continue  # private method
+    if key in ALWAYS_SKIPPED: continue
+    #if not hasattr(value, '__doc__'): continue
 
     # If we have a type, we only want to skip it if it doesn't have
     # any documented members.
