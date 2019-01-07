@@ -26,7 +26,7 @@ with io.open('README.md', encoding='utf8') as fp:
 
 setuptools.setup(
     name = 'pydoc-markdown',
-    version = '2.0.5',
+    version = '2.0.5-quilt1',
     description = 'Create Python API documentation in Markdown format',
     long_description = readme,
     long_description_content_type = 'text/markdown',
