@@ -154,8 +154,8 @@ def log(*args, **kwargs):
   print(*args, **kwargs)
 
 
-def main(argv):
-  args = parser.parse_args(argv)
+def main():
+  args = parser.parse_args()
   if args.command == 'new':
     new_project()
     return
@@ -278,4 +278,4 @@ def main(argv):
 
 
 if __name__ == '__main__':
-  main(sys.argv)
+  main()
