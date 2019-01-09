@@ -154,7 +154,7 @@ def log(*args, **kwargs):
   print(*args, **kwargs)
 
 
-def main(argv=None):
+def main(argv):
   args = parser.parse_args(argv)
   if args.command == 'new':
     new_project()
