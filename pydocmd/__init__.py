@@ -19,4 +19,4 @@
 # THE SOFTWARE.
 
 __author__ = 'Niklas Rosenstein <rosensteinniklas@gmail.com>'
-__version__ = '2.0.5-quilt1'   # if edited, edit also in setup.py
+__version__ = '2.0.5-quilt2'   # if edited, edit also in setup.py

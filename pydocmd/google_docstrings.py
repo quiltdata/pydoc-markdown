@@ -52,10 +52,13 @@ class Preprocessor(object):
     """
     sig = section.loader_context.get('sig')
     if sig:
-      # sig is not markdown.  Any '_*\' should be escaped.
+      # sig is not markdown, but will be read as markdown.
+      #   Any '_*\' should be escaped.
       for char in r'\*_':
         sig = sig.replace(char, '\\' + char)
       section.title = sig
+      if self.config.get('markdown_header_id'):
+        section.title = section.title + '  {{#{}}}'.format(sig.split('(', 1)[0])
 
     lines = []
     codeblock_opened = False
